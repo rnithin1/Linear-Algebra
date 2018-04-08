@@ -24,6 +24,15 @@ class SimpleMatrix:
         else:
             raise IndexError
 
+    def __repr__(self):
+        return str(deepcopy(self._matrix))
+
+    def __str__(self):
+        st = ""
+        for row in self._matrix:
+            st += str(row) + "\n"
+        return st.strip()
+
     def __len__(self):
         return len(self._matrix)
 
@@ -31,13 +40,15 @@ class SimpleMatrix:
         return deepcopy(self._matrix)
 
     def getCols(self):
-        a = []
-        for col in range(len(self._matrix)):
-            a.append([row[col] for row in self._matrix])
-        return a
+        return [(row[col] for row in self._matrix) \
+                for col in range(len(self._matrix))]
 
     def getRow(self, row : int):
         return list(self.matrix[row])
 
     def getCol(self, col : int):
         return self.getCols()[col]
+
+    def T(self):
+        return SimpleMatrix([list(a) for a in zip(*self._matrix)])
+

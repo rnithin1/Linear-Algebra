@@ -15,8 +15,8 @@ def determinant(matrix : Matrix):
 # every element of the diagonal. The proof is left as an
 # exercise to the reader. :D
 def quickDeterminant(matrix : Matrix):
-    matrix = convertToUpperTriangular(matrix)
-    print(matrix._matrix)
+    matrix, sign = convertToUpperTriangular(matrix)
+    print(matrix)
     if matrix == -1:
         return 0
     product = 1
@@ -34,12 +34,15 @@ def quickDeterminant(matrix : Matrix):
 def convertToUpperTriangular(matrix : Matrix):
     # Switches the rows of a matrix by their index.
     def switchRow(matrix : Matrix, row : int, replacement : int):
-        nonlocal sign
-        temp = matrix[row]
-        matrix[row] = matrix[replacement]
-        matrix[replacement] = matrix[row]
-        sign *= -1
-        return matrix
+        if row == replacement:
+            return matrix
+        else:
+            nonlocal sign
+            temp = matrix[row]
+            matrix[row] = matrix[replacement]
+            matrix[replacement] = temp
+            sign *= -1
+            return matrix
 
     # The sign is important, because if B is matrix identical to A
     # except for two swapped rows, then det(B) = -det(A). This can
@@ -59,17 +62,19 @@ def convertToUpperTriangular(matrix : Matrix):
             # Does type three row operations by finding the ratio needed
             # to add the "first" row to the current row to obtain zero.
             # Then, add the two rows together.
+            print(matrix)
+            print()
             for row in range(firstRow + 1, len(matrix)):
+                if matrix[row][currCol] == 0:
+                    continue
                 ratio = matrix[row][currCol] / matrix[firstRow][currCol]
-                tempRow = [x * ratio for x in matrix[firstRow]]
-                if matrix[row][currCol] - matrix[firstRow][currCol] == 0:
-                    newRow = [x + y for x, y in zip(matrix[row], tempRow)]
-                else:
-                    newRow = [x - y for x, y in zip(matrix[row], tempRow)]
+                tempRow = [x * -ratio for x in matrix[firstRow]]
+                print("tempRow: ", tempRow)
+                newRow = [x + y for x, y in zip(matrix[row], tempRow)]
                 matrix[row] = newRow
             currCol += 1
             firstRow += 1
-    return matrix
+    return matrix, sign
 
 # Returns the index of the first nonzero element.
 def checkColumn(matrix : Matrix, column : int):
