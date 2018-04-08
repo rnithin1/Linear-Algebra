@@ -12,8 +12,7 @@ def determinant(matrix : Matrix):
 
 # Converts a matrix into upper triangular form, so that
 # its determinant can be easily computed by multiplying
-# every element of the diagonal. The proof is left as an
-# exercise to the reader. :D
+# every element of the diagonal.
 def quickDeterminant(matrix : Matrix):
     matrix, sign = convertToUpperTriangular(matrix)
     if matrix == -1:

@@ -8,7 +8,7 @@ class SimpleMatrix:
         if "row" in form:
             self._matrix = deepcopy(rows)
         elif "col" in form:
-            self._matrix = [list(col) for col in zip(rows)]
+            self._matrix = [list(col) for col in zip(*rows)]
 
     def __setitem__(self, *args):
         assert isinstance(args[1], list), "must replace row with list"
