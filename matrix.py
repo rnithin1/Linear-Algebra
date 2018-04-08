@@ -44,7 +44,7 @@ class SimpleMatrix:
                 for col in range(len(self._matrix))]
 
     def getRow(self, row : int):
-        return list(self.matrix[row])
+        return list(self._matrix[row])
 
     def getCol(self, col : int):
         return self.getCols()[col]
