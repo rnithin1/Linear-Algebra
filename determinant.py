@@ -1,5 +1,5 @@
 from copy import deepcopy
-from Matrix import SimpleMatrix
+from matrix import SimpleMatrix
 
 Matrix = SimpleMatrix
 

@@ -2,8 +2,8 @@ from copy import deepcopy
 
 class SimpleMatrix:
     def __init__(self, rows, form="row"):
-#       assert len(set([len(row) for row in rows])) == 1, \
-#               "all rows/columns in the list must be the same length"
+        # assert len(set([len(row) for row in rows])) == 1, \
+        #        "all rows/columns in the list must be the same length"
         self._matrix = [[]]
         if "row" in form:
             self._matrix = deepcopy(rows)
