@@ -58,7 +58,7 @@ def convertPolynomial(s : str, var="x"):
             else:
                 returnForm.append("1{}".join(val.split(var)).format(var))
     returnForm = combineLikeTerms()
-    return returnForm
+    return sorted(returnForm, key=make_comparator(var), reverse=True)
 
 # Source: http://code.activestate.com/recipes/576653-convert-a-cmp-function-to-a-key-function/
 # Comparator that orders the elements of the basis
