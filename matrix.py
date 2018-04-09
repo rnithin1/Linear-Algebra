@@ -14,6 +14,7 @@ class SimpleMatrix:
         assert isinstance(args[1], list), "must replace row with list"
         if len(args) == 2:
             assert isinstance(args[0], int), "invalid row ID"
+            assert len(args[1]) == len(self._matrix), "row must be the same dimension as matrix"
             self._matrix[args[0]] = list(args[1])
 
     def __getitem__(self, *args):
