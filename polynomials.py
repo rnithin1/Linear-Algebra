@@ -100,3 +100,21 @@ def make_comparator(var : str):
                 return compare(x_val, y_val)
     return K
 
+# Creates a basis for any given polynomial, and returns
+# it, as well as the guise of the vector with respect to
+# the basis.
+def makeBasisForVector(s : str, var="x"):
+    vector, basis = [], []
+    reduced = convertPolynomial(s, var)
+    for vec in reduced:
+        if var not in vec:
+            vector.append(vec)
+        else:
+            vector.append(vec[:vec.index(var)])
+    for vec in reduced:
+        if var not in vec:
+            basis.append(1)
+        else:
+            basis.append(vec[vec.index(var):])
+    return basis, vector
+
