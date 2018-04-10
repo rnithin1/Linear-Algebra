@@ -35,9 +35,9 @@ def convertPolynomial(s : str, var="x"):
         # Then, it adds the constant terms to the list as well.
         # Terms like '0x^2' and '0' are valid, and are removed in
         # the return statement.
-        combinedNoZero = sorted([str(sum(d[list(d.keys())[0]])) + \
+        combinedNoZero = [str(sum(d[list(d.keys())[0]])) + \
                 list(d.keys())[0] for d in seen] + \
-                [str(sum(constants))])
+                [str(sum(constants))]
         return [val for val in combinedNoZero \
                 if (var in val and int(val[:val.index(var)]) != 0) \
                 or (var not in val and int(val) != 0)]
