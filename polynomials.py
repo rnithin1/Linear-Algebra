@@ -1,7 +1,6 @@
 from copy import deepcopy
 from matrix import SimpleMatrix as Matrix
-import fractions
-
+import fractions 
 # Canonical basis for Pn(R) = {1, x, ..., x^n}
 # Factors polynomials using the rational root theorem.
 
@@ -17,18 +16,19 @@ def convertPolynomial(s : str, var="x"):
         # string; if so, then add the coefficients, and if
         # not, then add it to the list and continue.
         for i in range(len(returnForm)):
-            if var not in returnForm[i]:
-                constants.append(int(returnForm[i]))
-            else:
-                vector = returnForm[i][returnForm[i].index(var):]
-                coeff = returnForm[i][:returnForm[i].index(var)]
-                possible = list(filter(lambda x : x.get(vector, -1) \
-                        != -1, seen))
-                if possible == []:
-                    seen.append({vector : [int(coeff)]})
+            if returnForm[i]:
+                if var not in returnForm[i]:
+                    constants.append(int(returnForm[i]))
                 else:
-                    seen[seen.index(possible[0])][vector] \
-                            .append(int(coeff))
+                    vector = returnForm[i][returnForm[i].index(var):]
+                    coeff = returnForm[i][:returnForm[i].index(var)]
+                    possible = list(filter(lambda x : x.get(vector, -1) \
+                            != -1, seen))
+                    if possible == []:
+                        seen.append({vector : [int(coeff)]})
+                    else:
+                        seen[seen.index(possible[0])][vector] \
+                                .append(int(coeff))
         # The following line takes the list of dictionaries, sums
         # the values of the coefficients, and prepends it to the
         # key of the dictionary, which contains the common vector.
@@ -58,7 +58,8 @@ def convertPolynomial(s : str, var="x"):
             else:
                 returnForm.append("1{}".join(val.split(var)).format(var))
     returnForm = combineLikeTerms()
-    return sorted(returnForm, key=make_comparator(var), reverse=True)
+    return Matrix([[var] for var in sorted(returnForm, \
+        key=make_comparator(var), reverse=True)])
 
 # Source: http://code.activestate.com/recipes/576653-convert-a-cmp-function-to-a-key-function/
 # Comparator that orders the elements of the basis
@@ -79,6 +80,7 @@ def make_comparator(var : str):
             return compare(self.obj, other.obj) >= 0
         def __ne__(self, other):
             return compare(self.obj, other.obj) != 0
+
     def compare(x, y):
         if var not in x and var not in y:
             if int(x) > int(y):
@@ -103,18 +105,23 @@ def make_comparator(var : str):
 # Creates a basis for any given polynomial, and returns
 # it, as well as the guise of the vector with respect to
 # the basis.
-def makeBasisForVector(s : str, var="x"):
+def makeBasisForVector(s, var="x"):
     vector, basis = [], []
-    reduced = convertPolynomial(s, var)
-    for vec in reduced:
+    if not isinstance(s, Matrix):
+        reduced = convertPolynomial(s, var)
+    else:
+        reduced = s
+    for vect in reduced:
+        vec = vect[0]
         if var not in vec:
             vector.append(vec)
         else:
             vector.append(vec[:vec.index(var)])
-    for vec in reduced:
+    for vect in reduced:
+        vec = vect[0]
         if var not in vec:
             basis.append(1)
         else:
             basis.append(vec[vec.index(var):])
-    return basis, vector
+    return Matrix(basis), Matrix(vector)
 

@@ -41,8 +41,7 @@ class SimpleMatrix:
         return deepcopy(self._matrix)
 
     def getCols(self):
-        return [(row[col] for row in self._matrix) \
-                for col in range(len(self._matrix))]
+        return self.T().getRows()
 
     def getRow(self, row : int):
         return list(self._matrix[row])
