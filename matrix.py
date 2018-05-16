@@ -52,3 +52,20 @@ class SimpleMatrix:
     def T(self):
         return SimpleMatrix([list(a) for a in zip(*self._matrix)])
 
+    def trace(self):
+        return sum([self._matrix[i][i] for i in range(len(self._matrix))])
+
+    # Calculates the Minor of the Matrix at position initialRow, initialCol.
+    def calculateMinors(self, initialRow : int, initialCol : int):
+        minor = []
+        rows = self.getRows()
+
+        # Concatenates two different ranges
+        from itertools import chain
+        concatenated = chain(range(30), range(2000, 5002))
+
+        for i in chain(range(initialRow), range(initialRow + 1, len(rows))):
+            minor.append(rows[i][0 : initialCol] + rows[i][initialCol + 1 :])
+
+        return SimpleMatrix(minor)
+

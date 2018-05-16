@@ -14,6 +14,16 @@ def determinant(matrix : Matrix):
 # its determinant can be easily computed by multiplying
 # every element of the diagonal.
 def quickDeterminant(matrix : Matrix):
+    if len(matrix) == 0:
+        return
+    elif len(matrix) == 1:
+        if isinstance(matrix[0], int):
+            return matrix[0]
+        elif len(matrix[0]) == 0:
+            return
+        else:
+            return matrix[0][0]
+
     matrix, sign = convertToUpperTriangular(matrix)
     if matrix == -1:
         return 0
@@ -51,7 +61,7 @@ def convertToUpperTriangular(matrix : Matrix):
     firstRow = 0
     matrix = deepcopy(matrix) # Done to avoid destroying the original
     while currCol < len(matrix) - 1:
-        minor = Matrix(generateMinor(matrix, firstRow, currCol))
+        minor = Matrix(generateSmaller(matrix, firstRow, currCol))
         firstNonZero = checkColumn(minor, 0) # Checks for first nonzero row
         if firstNonZero == -1:
             return -1
@@ -80,10 +90,43 @@ def checkColumn(matrix : Matrix, column : int):
 # the initialRow, initialCol coordinate in the original matrix.
 # This will be used to calculate the first nonzero element, used to
 # to calculate the determinant of the main matrix.
-def generateMinor(matrix : Matrix, initialRow : int, initialCol : int):
+def generateSmaller(matrix : Matrix, initialRow : int, initialCol : int):
     rows = matrix.getRows()
     rows = rows[initialRow:]
     for i in range(len(rows)):
         rows[i] = rows[i][initialCol:]
     return rows
+
+# Calculates the determinant of a matrix recursively from the top row
+# of the matrix's cofactor. See "cofactor expansion".
+# This has a runtime of O(k!)
+def slowDeterminant(matrix : Matrix):
+    assert(len(matrix[0]) == len(matrix)), "must be square"
+    if len(matrix) == 0:
+        return
+    elif len(matrix) == 1:
+        if isinstance(matrix[0], int):
+            return matrix[0]
+        elif len(matrix[0]) == 0:
+            return
+        else:
+            return matrix[0][0]
+    # ad - bc
+    elif len(matrix) == 2:
+        return matrix[1][1] * matrix[0][0] - matrix[0][1] \
+                * matrix[1][0]
+    else:
+        total = 0
+        for i in range(len(matrix[0])):
+            sign = 1 if i % 2 == 0 else -1
+            test = sign * matrix[0][i] \
+                    * slowDeterminant(matrix.calculateMinors(0, i))
+            total += test
+    return total
+
+# Calculating the inverse of a matrix the inefficient way, through
+# creating the cofactor matrix, transposing it, and dividing by the
+# determinant.
+def inverseAdjugate(matrix : Matrix):
+    pass
 
