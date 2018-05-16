@@ -1,4 +1,5 @@
 from copy import deepcopy
+import determinant
 
 class SimpleMatrix:
     def __init__(self, rows, form="row"):
@@ -68,4 +69,23 @@ class SimpleMatrix:
             minor.append(rows[i][0 : initialCol] + rows[i][initialCol + 1 :])
 
         return SimpleMatrix(minor)
+
+    # Calculates the inverse of a matrix, slowly, by dividing the
+    # adjugate matrix by the determinant.
+    def inverseAdjugate(self):
+        assert len(self) == len(self[0]), "matrix must be square"
+        adjugate = self.getRows()
+        det = determinant.determinant(SimpleMatrix(adjugate))
+        if float(det) == 0.0:
+            raise TypeError("Matrix is singular")
+        try:
+            for i in range(len(adjugate)):
+                for j in range(len(adjugate)):
+                    sign = (-1)**(i + j)
+                    adjugate[i][j] = determinant \
+                            .determinant(self.calculateMinors(i, j))
+                    adjugate[i][j] *= sign / det
+            return SimpleMatrix(adjugate).T()
+        except ZeroDivisionError as z:
+            raise TypeError("Matrix is singular")
 

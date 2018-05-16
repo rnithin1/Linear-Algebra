@@ -89,7 +89,8 @@ def checkColumn(matrix : Matrix, column : int):
 # This generates the matrix whose 0, 0 coordinate is the same as
 # the initialRow, initialCol coordinate in the original matrix.
 # This will be used to calculate the first nonzero element, used to
-# to calculate the determinant of the main matrix.
+# to calculate the determinant of the main matrix. This is also
+# equivalent to the matrix minor at 0, 0.
 def generateSmaller(matrix : Matrix, initialRow : int, initialCol : int):
     rows = matrix.getRows()
     rows = rows[initialRow:]
@@ -124,9 +125,4 @@ def slowDeterminant(matrix : Matrix):
             total += test
     return total
 
-# Calculating the inverse of a matrix the inefficient way, through
-# creating the cofactor matrix, transposing it, and dividing by the
-# determinant.
-def inverseAdjugate(matrix : Matrix):
-    pass
 
