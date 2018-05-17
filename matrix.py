@@ -71,7 +71,8 @@ class SimpleMatrix:
         return SimpleMatrix(minor)
 
     # Calculates the inverse of a matrix, slowly, by dividing the
-    # adjugate matrix by the determinant.
+    # adjugate matrix by the determinant. Runtime O(n!n^3) - can
+    # easily be reduced
     def inverseAdjugate(self):
         assert len(self) == len(self[0]), "matrix must be square"
         adjugate = self.getRows()
@@ -86,6 +87,17 @@ class SimpleMatrix:
                             .determinant(self.calculateMinors(i, j))
                     adjugate[i][j] *= sign / det
             return SimpleMatrix(adjugate).T()
+
         except ZeroDivisionError as z:
             raise TypeError("Matrix is singular")
 
+    # Basic matrix multiplication.
+    # Output is len(self) x len(other[0])
+    def times(self, other):
+        assert len(self[0]) == len(other), "dimensions do not match"
+        product = [[0] * len(other[0]) for _ in range(len(self))]
+        for i in range(len(self)):
+            for j in range(len(other[0])):
+                for k in range(len(other)):
+                    product[i][j] += self[i][k] * other[k][j]
+        return SimpleMatrix(product)
