@@ -1,6 +1,5 @@
 from copy import deepcopy
-from matrix import SimpleMatrix as Matrix
-import fractions 
+import fractions
 # Canonical basis for Pn(R) = {1, x, ..., x^n}
 # Factors polynomials using the rational root theorem.
 
@@ -123,5 +122,39 @@ def makeBasisForVector(s, var="x"):
             basis.append(1)
         else:
             basis.append(vec[vec.index(var):])
-    return Matrix(basis), Matrix(vector)
+    return Matrix([[lst] for lst in basis]), \
+            Matrix([[lst] for lst in vector])
 
+def basisStandard(terms: tuple, var="x"):
+    basis = terms[0]
+    values = terms[1]
+    if basis[-1] == 1:
+        pass
+
+# Rewrites the basis in terms of the standard quadratic.
+def basisStandardQuadratic(terms: tuple, var="x"):
+    basis = terms[0]
+    values = terms[1]
+    assert len(basis) <= 3, "highest power must be less than 2"
+    if not basis[-1]:
+        return
+    elif basis[-1][0] == 1:
+        return Matrix([[1], ['x'], ['x^2']]), \
+                Matrix([values[-1], ['0'], ['0']])
+    else:
+        largestPower = basis[-1][0][basis[-1][0].index(var) + 1:]
+        return largestPower
+
+def quadraticFormula(matrix, var="x"):
+    # Formula:
+    if not isinstance(matrix, Matrix):
+        terms = basisStandardQuadratic(makeBasisForVector(matrix), var)
+    else:
+        terms = basisStandardQuadratic(matrix)
+    return terms
+
+def characteristicPolynomial(matrix, var="x"):
+    if len(matrix) == 2:
+        return 4
+
+import matrix

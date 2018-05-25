@@ -1,19 +1,16 @@
 from copy import deepcopy
-from matrix import SimpleMatrix
-
-Matrix = SimpleMatrix
 
 # Calculates in O(n^3) time the determinant of a matrix,
 # by converting it to upper triangular, and multiplying
 # along the diagonal of the matrix.
-def determinant(matrix : Matrix):
+def determinant(matrix):
     assert(len(matrix[0]) == len(matrix)), "must be square"
     return quickDeterminant(matrix)
 
 # Converts a matrix into upper triangular form, so that
 # its determinant can be easily computed by multiplying
 # every element of the diagonal.
-def quickDeterminant(matrix : Matrix):
+def quickDeterminant(matrix):
     if len(matrix) == 0:
         return
     elif len(matrix) == 1:
@@ -39,9 +36,9 @@ def quickDeterminant(matrix : Matrix):
 # type three row operations (see Friedberg's Linear Algebra) to
 # change the all the elements of the first column besides the first
 # to zero. Then, ignore the first row and first column, and repeat.
-def convertToUpperTriangular(matrix : Matrix):
+def convertToUpperTriangular(matrix ):
     # Switches the rows of a matrix by their index.
-    def switchRow(matrix : Matrix, row : int, replacement : int):
+    def switchRow(matrix, row : int, replacement : int):
         if row == replacement:
             return matrix
         else:
@@ -82,7 +79,7 @@ def convertToUpperTriangular(matrix : Matrix):
     return matrix, sign
 
 # Returns the index of the first nonzero element.
-def checkColumn(matrix : Matrix, column : int):
+def checkColumn(matrix, column : int):
     return next((i for i, \
             x in enumerate(matrix.getCol(column)) if x), -1)
 
@@ -91,7 +88,7 @@ def checkColumn(matrix : Matrix, column : int):
 # This will be used to calculate the first nonzero element, used to
 # to calculate the determinant of the main matrix. This is also
 # equivalent to the matrix minor at 0, 0.
-def generateSmaller(matrix : Matrix, initialRow : int, initialCol : int):
+def generateSmaller(matrix , initialRow : int, initialCol : int):
     rows = matrix.getRows()
     rows = rows[initialRow:]
     for i in range(len(rows)):
@@ -101,7 +98,7 @@ def generateSmaller(matrix : Matrix, initialRow : int, initialCol : int):
 # Calculates the determinant of a matrix recursively from the top row
 # of the matrix's cofactor. See "cofactor expansion".
 # This has a runtime of O(k!)
-def slowDeterminant(matrix : Matrix):
+def slowDeterminant(matrix):
     assert(len(matrix[0]) == len(matrix)), "must be square"
     if len(matrix) == 0:
         return
@@ -125,4 +122,4 @@ def slowDeterminant(matrix : Matrix):
             total += test
     return total
 
-
+from matrix import SimpleMatrix as Matrix

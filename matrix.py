@@ -1,5 +1,4 @@
 from copy import deepcopy
-import determinant
 
 class SimpleMatrix:
     def __init__(self, rows, form="row"):
@@ -101,3 +100,5 @@ class SimpleMatrix:
                 for k in range(len(other)):
                     product[i][j] += self[i][k] * other[k][j]
         return SimpleMatrix(product)
+
+import determinant
